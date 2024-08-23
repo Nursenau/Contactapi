@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from 'src/app/api.service';
-
 import { User } from 'src/app/models/user';
 
 @Component({
@@ -20,18 +19,19 @@ export class UserListComponent implements OnInit {
 
   loadUsers(): void {
     this.apiService.getAllUsers().subscribe({
-      next: (data: User[]) => {
+      next: (data) => {
         this.users = data;
       },
-      error: (err: any) => {
+      error: (err) => {
         console.error('Kullanıcılar yüklenirken bir hata oluştu:', err);
       }
     });
   }
 
   editUser(userId: string): void {
+    console.log(userId)
     // Kullanıcıyı düzenleme sayfasına yönlendirin
-    this.router.navigate(['/register'], { queryParams: { id: userId } });
+    this.router.navigate(['/register', userId]);
   }
 
   deleteUser(userId: string): void {
@@ -41,7 +41,7 @@ export class UserListComponent implements OnInit {
           console.log('Kullanıcı başarıyla silindi.');
           this.loadUsers(); // Kullanıcıyı sildikten sonra listeyi güncelle
         },
-        error: (err: any) => {
+        error: (err) => {
           console.error('Kullanıcı silinirken bir hata oluştu:', err);
         }
       });
